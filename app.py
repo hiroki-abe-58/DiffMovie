@@ -17,6 +17,8 @@ CUSTOM_CSS = """
 /* 全体のスタイル */
 .gradio-container {
     max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 2rem !important;
 }
 
 /* ヘッダー */
