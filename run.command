@@ -42,4 +42,3 @@ echo ""
 
 # プロセスを待機
 wait $APP_PID
-
