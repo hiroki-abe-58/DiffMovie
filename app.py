@@ -41,6 +41,19 @@ CUSTOM_CSS = """
     margin-top: 0.5rem !important;
 }
 
+/* 入力エリアを横並びに強制 */
+.input-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 1rem !important;
+}
+
+.input-row > div {
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
 /* ドロップゾーン */
 .drop-zone {
     border: 2px dashed #EEFF00 !important;
@@ -379,8 +392,8 @@ def create_app():
         """)
         
         # 入力エリア
-        with gr.Row():
-            with gr.Column(scale=1):
+        with gr.Row(elem_classes=["input-row"]):
+            with gr.Column(scale=1, min_width=300):
                 gr.HTML("<p class='input-label'>入力A（変換元）</p>")
                 video_a = gr.File(
                     label="",
@@ -389,7 +402,7 @@ def create_app():
                     elem_classes=["drop-zone"]
                 )
             
-            with gr.Column(scale=1):
+            with gr.Column(scale=1, min_width=300):
                 gr.HTML("<p class='input-label'>入力B（変換先）</p>")
                 video_b = gr.File(
                     label="",
