@@ -54,4 +54,8 @@ build/
 dist/
 *.egg-info/
 
+# レポート出力（ローカル生成ファイル）
+reports/
+
+
 
