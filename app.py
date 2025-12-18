@@ -259,7 +259,7 @@ def create_comparison_html(comparison_data: list) -> str:
 
 
 def create_single_info_html(metadata_dict: dict, label: str) -> str:
-    """単一の動画情報をHTMLテーブルとして生成"""
+    """単一の動画情報をHTMLテーブルとして生成（アコーディオン用）"""
     if not metadata_dict:
         return f"<p>{label}の情報がありません</p>"
     
@@ -277,6 +277,41 @@ def create_single_info_html(metadata_dict: dict, label: str) -> str:
         """
     
     html += "</table>"
+    return html
+
+
+def create_single_video_table(metadata_dict: dict, label: str) -> str:
+    """単一の動画情報をメインエリア用のHTMLテーブルとして生成"""
+    if not metadata_dict:
+        return f"<p>{label}の情報がありません</p>"
+    
+    html = f"""
+    <div style="margin-bottom: 1rem;">
+        <h4 style="color: #EEFF00; margin-bottom: 15px; font-size: 1.2rem;">{label} の詳細情報</h4>
+        <p style="color: #888; margin-bottom: 15px;">もう1つの動画を追加すると比較できます</p>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+        <thead>
+            <tr style="background: #EEFF00; color: #000;">
+                <th style="padding: 12px; text-align: left; width: 40%;">項目</th>
+                <th style="padding: 12px; text-align: left; width: 60%;">値</th>
+            </tr>
+        </thead>
+        <tbody>
+    """
+    
+    for key, value in metadata_dict.items():
+        html += f"""
+            <tr>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #333; color: #ccc;">{key}</td>
+                <td style="padding: 10px 12px; border-bottom: 1px solid #333; color: #fff;">{value}</td>
+            </tr>
+        """
+    
+    html += """
+        </tbody>
+    </table>
+    """
     return html
 
 
@@ -325,9 +360,13 @@ def analyze_and_compare(video_a, video_b):
         comparison_html = create_comparison_html(comparison_data)
         summary_text = generate_conversion_summary(meta_a, meta_b)
     elif meta_a:
-        comparison_html = "<p style='color: #EEFF00;'>入力Bを追加すると比較できます</p>"
+        # 1つだけの場合は単体情報を表示
+        comparison_html = create_single_video_table(dict_a, "入力A")
+        summary_text = "入力Bを追加すると変換サマリーが表示されます"
     elif meta_b:
-        comparison_html = "<p style='color: #EEFF00;'>入力Aを追加すると比較できます</p>"
+        # 1つだけの場合は単体情報を表示
+        comparison_html = create_single_video_table(dict_b, "入力B")
+        summary_text = "入力Aを追加すると変換サマリーが表示されます"
     
     return comparison_html, summary_text, info_a_html, info_b_html
 
